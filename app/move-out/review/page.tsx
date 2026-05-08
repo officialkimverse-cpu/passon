@@ -28,14 +28,41 @@ export default function MoveOutReviewPage() {
     });
   }
 
+  async function compressImageToDataUrl(
+    file: File,
+    { maxDim, quality }: { maxDim: number; quality: number },
+  ) {
+    // Convert any image to a resized JPEG data URL to keep request size small.
+    const src = await fileToDataUrl(file);
+    const img = new Image();
+    img.src = src;
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("Failed to load image"));
+    });
+
+    const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+    const w = Math.max(1, Math.round(img.width * scale));
+    const h = Math.max(1, Math.round(img.height * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas not supported");
+    ctx.drawImage(img, 0, 0, w, h);
+
+    return canvas.toDataURL("image/jpeg", quality);
+  }
+
   async function generateForGroup(groupId: string, photoIds: string[]) {
     const images = [];
-    for (const pid of photoIds.slice(0, 6)) {
+    // Keep payload small for Vercel: fewer images + resized/compressed.
+    for (const pid of photoIds.slice(0, 3)) {
       const p = photoById.get(pid);
       if (!p) continue;
-      const dataUrl = await fileToDataUrl(p.file);
-      const mediaType = p.file.type || "image/jpeg";
-      images.push({ mediaType, base64: dataUrl });
+      const dataUrl = await compressImageToDataUrl(p.file, { maxDim: 1024, quality: 0.72 });
+      images.push({ mediaType: "image/jpeg", base64: dataUrl });
     }
 
     const res = await fetch("/api/move-out/analyze", {
