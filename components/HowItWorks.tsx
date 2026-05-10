@@ -1,3 +1,4 @@
+import LandingIllustration from "@/components/LandingIllustration";
 import { sellerSteps } from "@/lib/mockData";
 
 export default function HowItWorks() {
@@ -20,9 +21,14 @@ export default function HowItWorks() {
               key={step.number}
               className="bg-gray-50 rounded-2xl p-6 flex flex-col gap-4 border border-gray-100"
             >
-              <div className="text-3xl">{step.icon}</div>
-              <div className="text-xs font-bold text-emerald-600 tracking-widest uppercase">
-                Step {step.number}
+              <LandingIllustration
+                src={step.imageSrc}
+                alt={step.imageAlt}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              />
+              <div className="inline-flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-widest">
+                <span aria-hidden>{step.icon}</span>
+                <span>Step {step.number}</span>
               </div>
               <h3 className="font-semibold text-gray-900 text-base leading-snug">
                 {step.title}

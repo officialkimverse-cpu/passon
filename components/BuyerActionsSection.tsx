@@ -1,31 +1,5 @@
-const buyerSteps = [
-  {
-    number: "01",
-    title: "Open your invite link",
-    description:
-      "Access the listing for your new place and browse what’s already in the unit before you arrive.",
-    icon: "🔗",
-  },
-  {
-    number: "02",
-    title: "Buy now",
-    description: "Lock it in at the listed price when you're ready to commit.",
-    icon: "🛒",
-  },
-  {
-    number: "03",
-    title: "Make an offer or negotiate",
-    description:
-      "Propose a price, then chat to land somewhere fair—item by item, without back-and-forth pickup planning.",
-    icon: "💬",
-  },
-  {
-    number: "04",
-    title: "Pass on what you don’t want",
-    description: "Mark items as not interested so your view stays focused on your essentials.",
-    icon: "✅",
-  },
-];
+import LandingIllustration from "@/components/LandingIllustration";
+import { buyerSteps } from "@/lib/mockData";
 
 export default function BuyerActionsSection() {
   return (
@@ -47,9 +21,14 @@ export default function BuyerActionsSection() {
               key={step.number}
               className="bg-gray-50 rounded-2xl p-6 flex flex-col gap-4 border border-gray-100"
             >
-              <div className="text-3xl">{step.icon}</div>
-              <div className="text-xs font-bold text-emerald-600 tracking-widest uppercase">
-                Step {step.number}
+              <LandingIllustration
+                src={step.imageSrc}
+                alt={step.imageAlt}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              />
+              <div className="inline-flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-widest">
+                <span aria-hidden>{step.icon}</span>
+                <span>Step {step.number}</span>
               </div>
               <h3 className="font-semibold text-gray-900 text-base leading-snug">
                 {step.title}

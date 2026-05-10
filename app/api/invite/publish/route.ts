@@ -31,10 +31,9 @@ export async function POST(req: Request) {
     })),
   };
 
-  saveInvite(payload);
+  await saveInvite(payload);
 
-  // sanity read
-  const saved = getInvite(id);
+  const saved = await getInvite(id);
   if (!saved) return NextResponse.json({ error: "Failed to save invite" }, { status: 500 });
 
   return NextResponse.json({ id, url: `/invite/${id}` });

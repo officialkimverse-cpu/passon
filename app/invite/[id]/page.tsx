@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -19,22 +19,25 @@ type InvitePayload = {
   }>;
 };
 
-export default function InvitePage({ params }: { params: { id: string } }) {
+export default function InvitePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [data, setData] = useState<InvitePayload | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const run = async () => {
       setError(null);
-      const res = await fetch(`/api/invite/${params.id}`);
+      const res = await fetch(`/api/invite/${id}`);
       if (!res.ok) {
-        setError("Invite not found (this test link works while the dev server is running).");
+        setError(
+          "Invite not found. If you’re on the live site, the project needs Redis (Upstash) env vars so invites persist across servers.",
+        );
         return;
       }
       setData(await res.json());
     };
     run();
-  }, [params.id]);
+  }, [id]);
 
   return (
     <>

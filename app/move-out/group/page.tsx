@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,6 +15,15 @@ export default function MoveOutGroupPage() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const selectedRef = useRef<Set<string>>(new Set());
   const [lastClick, setLastClick] = useState<{ scope: string; id: string } | null>(null);
+  const [coarsePointer, setCoarsePointer] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse)");
+    const sync = () => setCoarsePointer(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const photoById = useMemo(() => new Map(photos.map((p) => [p.id, p])), [photos]);
   const assigned = useMemo(() => new Set(groups.flatMap((g) => g.photoIds)), [groups]);
@@ -70,6 +79,15 @@ export default function MoveOutGroupPage() {
         { id: "item-2", title: "Item 2", photoIds: [] },
       ]);
     }
+  }
+
+  function assignSelectedToGroup(groupId: string) {
+    const ids = Array.from(selectedRef.current);
+    if (ids.length === 0) return;
+    addPhotosToGroup(ids, groupId);
+    const next = new Set<string>();
+    selectedRef.current = next;
+    setSelected(next);
   }
 
   function addPhotosToGroup(photoIds: string[], groupId: string) {
@@ -249,8 +267,19 @@ export default function MoveOutGroupPage() {
                     </Link>
                   </div>
                   <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                    Drag each photo into an item folder. Group different angles of the same item
-                    together.
+                    {coarsePointer ? (
+                      <>
+                        <span className="font-medium text-gray-700">On this device:</span> tap a photo
+                        to select it, then tap{" "}
+                        <span className="font-medium text-gray-700">Add to this item</span> on the
+                        folder you want. Group different angles of the same piece together.
+                      </>
+                    ) : (
+                      <>
+                        Drag each photo into an item folder (or select several with Ctrl/Cmd-click,
+                        then drag one of them). Group different angles of the same item together.
+                      </>
+                    )}
                   </p>
 
                   {!allAssigned && (
@@ -268,7 +297,7 @@ export default function MoveOutGroupPage() {
                       {unassigned.map((p) => (
                         <div
                           key={p.id}
-                          draggable
+                          draggable={!coarsePointer}
                           onDragStart={(e) => {
                             const ids = getSelectedForDrag(p.id);
                             // Some browsers drop custom types; always include JSON in text/plain.
@@ -284,6 +313,7 @@ export default function MoveOutGroupPage() {
                             photo={p}
                             size="sm"
                             selected={selected.has(p.id)}
+                            alwaysShowActions={coarsePointer}
                             onDelete={() => deletePhotoEverywhere(p.id)}
                           />
                         </div>
@@ -300,8 +330,9 @@ export default function MoveOutGroupPage() {
                     <div>
                       <p className="text-sm font-semibold text-gray-900">Item folders</p>
                       <p className="text-xs text-gray-500 mt-1">
-                        Drop photos into Item 1, Item 2, etc. A new item appears automatically when
-                        the last one has a photo.
+                        {coarsePointer
+                          ? "Tap photos to select, then use Add to this item on a folder. A new item appears when the last folder gets its first photo."
+                          : "Drop photos into Item 1, Item 2, etc. A new item appears automatically when the last one has a photo."}
                       </p>
                     </div>
                     <Link
@@ -385,15 +416,36 @@ export default function MoveOutGroupPage() {
                           </div>
 
                           {groupPhotos.length === 0 ? (
-                            <div className="h-[88px] rounded-xl border border-dashed border-gray-200 bg-white/60 flex items-center justify-center text-xs text-gray-400">
-                              Drop photos here
-                            </div>
+                            coarsePointer ? (
+                              <button
+                                type="button"
+                                onClick={() => assignSelectedToGroup(g.id)}
+                                disabled={selected.size === 0}
+                                className={[
+                                  "w-full h-[88px] rounded-xl border border-dashed flex flex-col items-center justify-center gap-1 px-3 text-xs font-medium transition-colors",
+                                  selected.size === 0
+                                    ? "border-gray-200 bg-white/60 text-gray-400 cursor-not-allowed"
+                                    : "border-emerald-300 bg-emerald-50/80 text-emerald-800 active:bg-emerald-100",
+                                ].join(" ")}
+                              >
+                                <span>Add to this item</span>
+                                <span className="text-[11px] font-normal text-gray-500">
+                                  {selected.size === 0
+                                    ? "Tap a photo first"
+                                    : `${selected.size} photo${selected.size === 1 ? "" : "s"} selected`}
+                                </span>
+                              </button>
+                            ) : (
+                              <div className="h-[88px] rounded-xl border border-dashed border-gray-200 bg-white/60 flex items-center justify-center text-xs text-gray-400">
+                                Drop photos here
+                              </div>
+                            )
                           ) : (
                             <div className="grid grid-cols-3 gap-2">
                               {groupPhotos.slice(0, 6).map((p) => (
                                 <div
                                   key={p!.id}
-                                  draggable
+                                  draggable={!coarsePointer}
                                   onDragStart={(e) => {
                                     const ids = getSelectedForDrag(p!.id);
                                     const payload = JSON.stringify(ids);
@@ -407,6 +459,7 @@ export default function MoveOutGroupPage() {
                                   <PhotoCard
                                     photo={p!}
                                     size="sm"
+                                    alwaysShowActions={coarsePointer}
                                     onRemove={() => removePhotoFromGroup(p!.id, g.id)}
                                     onDelete={() => deletePhotoEverywhere(p!.id)}
                                     selected={selected.has(p!.id)}
@@ -419,6 +472,23 @@ export default function MoveOutGroupPage() {
                                 </div>
                               )}
                             </div>
+                          )}
+                          {coarsePointer && groupPhotos.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => assignSelectedToGroup(g.id)}
+                              disabled={selected.size === 0}
+                              className={[
+                                "mt-3 w-full rounded-xl py-2.5 text-xs font-semibold transition-colors border",
+                                selected.size === 0
+                                  ? "border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
+                                  : "border-emerald-200 bg-emerald-50 text-emerald-800 active:bg-emerald-100",
+                              ].join(" ")}
+                            >
+                              {selected.size === 0
+                                ? "Tap a photo to select, then add here"
+                                : `Add ${selected.size} selected photo${selected.size === 1 ? "" : "s"} to this item`}
+                            </button>
                           )}
                         </div>
                       );

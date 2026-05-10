@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const invite = getInvite(id);
+  const invite = await getInvite(id);
   if (!invite) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(invite);
 }

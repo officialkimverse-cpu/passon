@@ -1,3 +1,4 @@
+import LandingIllustration from "@/components/LandingIllustration";
 import { valueProps } from "@/lib/mockData";
 
 export default function ValueProps() {
@@ -14,14 +15,23 @@ export default function ValueProps() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {valueProps.map((vp) => (
             <div
               key={vp.title}
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow"
+              className="bg-white rounded-2xl p-6 border border-gray-100 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
             >
-              <span className="text-3xl">{vp.icon}</span>
-              <h3 className="font-semibold text-gray-900">{vp.title}</h3>
+              <LandingIllustration
+                src={vp.imageSrc}
+                alt={vp.imageAlt}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="flex items-start gap-3">
+                <span className="text-2xl shrink-0" aria-hidden>
+                  {vp.icon}
+                </span>
+                <h3 className="font-semibold text-gray-900 text-base leading-snug">{vp.title}</h3>
+              </div>
               <p className="text-sm text-gray-500 leading-relaxed">{vp.description}</p>
             </div>
           ))}
