@@ -130,8 +130,8 @@ export const buyerSteps = [
       "Access the listing for your new place and browse what's already in the unit before you arrive.",
     icon: "🔗",
     imageSrc:
-      "https://images.unsplash.com/photo-1512428559088-560f0f27e15e?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Smartphone showing messages on a soft background",
+      "https://images.unsplash.com/photo-1511707171634-5f897c02bc9e?auto=format&fit=crop&w=1600&q=80",
+    imageAlt: "Person holding a smartphone, suggesting opening a link or message",
   },
   {
     number: "02",
@@ -187,8 +187,8 @@ export const valueProps = [
     title: "Less waste",
     description: "Keep good furniture out of landfills. Every reused item is a small win for the planet.",
     imageSrc:
-      "https://images.unsplash.com/photo-1532990874657-6c13d0fc912f?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Hands holding a small plant, suggesting reuse and care",
+      "https://images.unsplash.com/photo-1542601906990-b4d3b778b0c4?auto=format&fit=crop&w=1600&q=80",
+    imageAlt: "View of Earth from space, suggesting care for the environment",
   },
   {
     icon: "🏘️",
@@ -196,8 +196,8 @@ export const valueProps = [
     description:
       "Invite links and building context—so both sides know the handoff is tied to the lease, not a parking lot.",
     imageSrc:
-      "https://images.unsplash.com/photo-1506784987537-94d5c0e04928?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Calendar and planning supplies on a desk",
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+    imageAlt: "Desk with laptop and notes, suggesting planning and scheduled turnover",
   },
   {
     icon: "🎓",
