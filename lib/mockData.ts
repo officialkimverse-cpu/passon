@@ -130,8 +130,8 @@ export const buyerSteps = [
       "Access the listing for your new place and browse what's already in the unit before you arrive.",
     icon: "🔗",
     imageSrc:
-      "https://images.unsplash.com/photo-1511707171634-5f897c02bc9e?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Person holding a smartphone, suggesting opening a link or message",
+      "https://images.unsplash.com/photo-1741156386380-0236c72eb6f9?auto=format&fit=crop&w=1600&q=80",
+    imageAlt: "A hand holding apartment keys in front of a doorway, suggesting a new lease and invite link",
   },
   {
     number: "02",
@@ -187,8 +187,8 @@ export const valueProps = [
     title: "Less waste",
     description: "Keep good furniture out of landfills. Every reused item is a small win for the planet.",
     imageSrc:
-      "https://images.unsplash.com/photo-1542601906990-b4d3b778b0c4?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "View of Earth from space, suggesting care for the environment",
+      "https://images.unsplash.com/photo-1525695230005-efd074980869?auto=format&fit=crop&w=1600&q=80",
+    imageAlt: "A plant growing from a reused container, suggesting reuse and less waste",
   },
   {
     icon: "🏘️",
