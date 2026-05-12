@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "PassOn — Sell and furnish your rental without pickup runs.",
   description:
     "PassOn is the renter marketplace for move-out and move-in. Sellers list from photos; buyers shop the last tenant's place—items stay in the unit for the next resident.",
+  icons: {
+    icon: "/passon-logo.svg",
+    apple: "/passon-logo.svg",
+  },
 };
 
 export default function RootLayout({

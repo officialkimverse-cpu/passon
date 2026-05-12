@@ -1,3 +1,5 @@
+import PassOnLogoMark from "@/components/PassOnLogoMark";
+
 const links = {
   Product: ["Browse items", "List your items", "Moving out", "Moving in"],
   Company: ["About", "Blog", "Press", "Contact"],
@@ -11,8 +13,8 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🔄</span>
+            <div className="flex items-center gap-2.5">
+              <PassOnLogoMark className="h-9 w-9 shrink-0 text-white" />
               <span className="font-bold text-xl tracking-tight">PassOn</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">

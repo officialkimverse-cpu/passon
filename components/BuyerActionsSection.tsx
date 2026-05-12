@@ -21,11 +21,7 @@ export default function BuyerActionsSection() {
               key={step.number}
               className="bg-gray-50 rounded-2xl p-6 flex flex-col gap-4 border border-gray-100"
             >
-              <LandingIllustration
-                src={step.imageSrc}
-                alt={step.imageAlt}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
+              <LandingIllustration src={step.imageSrc} alt={step.imageAlt} />
               <div className="inline-flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-widest">
                 <span aria-hidden>{step.icon}</span>
                 <span>Step {step.number}</span>

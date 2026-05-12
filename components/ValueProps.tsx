@@ -21,11 +21,7 @@ export default function ValueProps() {
               key={vp.title}
               className="bg-white rounded-2xl p-6 border border-gray-100 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
             >
-              <LandingIllustration
-                src={vp.imageSrc}
-                alt={vp.imageAlt}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
+              <LandingIllustration src={vp.imageSrc} alt={vp.imageAlt} />
               <div className="flex items-start gap-3">
                 <span className="text-2xl shrink-0" aria-hidden>
                   {vp.icon}

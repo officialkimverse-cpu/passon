@@ -5,6 +5,30 @@ type PublishRequest = {
   items: InviteItem[];
 };
 
+/** Vercel serverless request bodies are capped (~4.5MB). Thumbnails are the usual overflow. */
+const MAX_JSON_BYTES = 4_000_000;
+const MAX_THUMB_CHARS = 100_000;
+const MAX_DESCRIPTION = 12_000;
+const MAX_USAGE_NOTES = 8_000;
+
+function slimInviteItems(items: InviteItem[]): InviteItem[] {
+  return items.map((it) => ({
+    ...it,
+    thumbnailDataUrl:
+      typeof it.thumbnailDataUrl === "string" && it.thumbnailDataUrl.length <= MAX_THUMB_CHARS
+        ? it.thumbnailDataUrl
+        : undefined,
+    description:
+      typeof it.description === "string" && it.description.length > MAX_DESCRIPTION
+        ? it.description.slice(0, MAX_DESCRIPTION)
+        : it.description,
+    usageNotes:
+      typeof it.usageNotes === "string" && it.usageNotes.length > MAX_USAGE_NOTES
+        ? it.usageNotes.slice(0, MAX_USAGE_NOTES)
+        : it.usageNotes,
+  }));
+}
+
 function makeId() {
   return `inv_${Math.random().toString(36).slice(2, 10)}${Date.now().toString(36)}`;
 }
@@ -21,11 +45,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing items" }, { status: 400 });
   }
 
+  let items = slimInviteItems(body.items);
+  let serialized = JSON.stringify({ items });
+  if (serialized.length > MAX_JSON_BYTES) {
+    items = items.map((it) => ({ ...it, thumbnailDataUrl: undefined }));
+    serialized = JSON.stringify({ items });
+  }
+  if (serialized.length > MAX_JSON_BYTES) {
+    return NextResponse.json(
+      { error: "Listing too large to publish. Try fewer items or shorter notes." },
+      { status: 413 },
+    );
+  }
+
   const id = makeId();
   const payload: InvitePayload = {
     id,
     createdAt: new Date().toISOString(),
-    items: body.items.map((it, idx) => ({
+    items: items.map((it, idx) => ({
       ...it,
       id: it.id || `item_${idx + 1}`,
     })),

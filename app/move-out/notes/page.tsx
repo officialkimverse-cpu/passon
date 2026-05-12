@@ -11,6 +11,7 @@ import {
   type MoveOutItemCondition,
   type MoveOutItemNotes,
 } from "@/context/MoveOutContext";
+import { compressImageToDataUrl } from "@/lib/compressImageClient";
 
 export default function MoveOutNotesPage() {
   const { photos, groups, drafts, setDrafts, notes, setNotes } = useMoveOut();
@@ -59,15 +60,6 @@ export default function MoveOutNotesPage() {
     return { basePrice, salePercent, isCustom, finalPrice };
   }
 
-  async function fileToDataUrl(file: File) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = () => reject(new Error("Failed to read file"));
-      reader.readAsDataURL(file);
-    });
-  }
-
   async function publishInvite() {
     setPublishError(null);
     setPublishing(true);
@@ -82,7 +74,10 @@ export default function MoveOutNotesPage() {
         const pricing = computeFinalPrice(g.id);
 
         const firstPhoto = g.photoIds[0] ? photoById.get(g.photoIds[0]) : undefined;
-        const thumbnailDataUrl = firstPhoto ? await fileToDataUrl(firstPhoto.file) : undefined;
+        // Small JPEG thumbs only — full camera files exceed Vercel serverless body limits.
+        const thumbnailDataUrl = firstPhoto
+          ? await compressImageToDataUrl(firstPhoto.file, { maxDim: 320, quality: 0.54 })
+          : undefined;
 
         items.push({
           id: g.id,
