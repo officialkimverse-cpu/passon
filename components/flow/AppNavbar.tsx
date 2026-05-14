@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import PassOnLogo from "@/components/PassOnLogo";
+import PassOnBrand from "@/components/PassOnBrand";
 
 export default function AppNavbar() {
   const { cartCount } = useCart();
@@ -12,7 +12,7 @@ export default function AppNavbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center shrink-0" aria-label="PassOn home">
-          <PassOnLogo className="h-9 w-auto max-h-9 max-w-[min(148px,42vw)]" />
+          <PassOnBrand className="max-w-[min(260px,62vw)]" />
         </Link>
 
         {/* Nav links */}

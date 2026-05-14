@@ -1,5 +1,5 @@
 import CartNavLink from "@/components/CartNavLink";
-import PassOnLogo from "@/components/PassOnLogo";
+import PassOnBrand from "@/components/PassOnBrand";
 
 export default function Navbar() {
   return (
@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center shrink-0" aria-label="PassOn home">
-          <PassOnLogo className="h-9 w-auto max-h-9 max-w-[min(148px,42vw)]" />
+          <PassOnBrand className="max-w-[min(260px,62vw)]" />
         </a>
 
         {/* Nav links */}
