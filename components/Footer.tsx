@@ -14,7 +14,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
-              <PassOnLogoMark className="max-w-[140px]" />
+              <PassOnLogoMark className="h-9 w-auto max-h-10 max-w-[160px] object-left" />
             </div>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               In-unit handoff for renters: list what you leave behind, shop what the last tenant

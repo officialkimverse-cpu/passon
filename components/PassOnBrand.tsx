@@ -20,12 +20,7 @@ export default function PassOnBrand({ className }: { className?: string }) {
     <img
       src={BRAND_SRC}
       alt=""
-      className={[
-        "block h-9 w-auto max-h-9 object-contain object-left",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={["block object-contain", className ?? "h-9 w-auto max-h-9 object-left"].join(" ")}
       decoding="async"
       onError={() => setUseRaster(false)}
     />

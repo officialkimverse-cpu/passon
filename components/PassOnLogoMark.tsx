@@ -20,12 +20,9 @@ export default function PassOnLogoMark({ className }: { className?: string }) {
     <img
       src={MARK_SRC}
       alt=""
-      className={[
-        "block h-8 w-auto max-h-10 object-contain object-left sm:h-9 sm:max-h-9",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={["block object-contain", className ?? "h-8 w-auto max-h-8 sm:h-9 sm:max-h-9 object-left"].join(
+        " ",
+      )}
       decoding="async"
       onError={() => setUseRaster(false)}
     />
