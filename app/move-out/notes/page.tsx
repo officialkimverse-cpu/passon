@@ -73,11 +73,15 @@ export default function MoveOutNotesPage() {
         const n = ensure(g.id);
         const pricing = computeFinalPrice(g.id);
 
-        const firstPhoto = g.photoIds[0] ? photoById.get(g.photoIds[0]) : undefined;
-        // Small JPEG thumbs only — full camera files exceed Vercel serverless body limits.
-        const thumbnailDataUrl = firstPhoto
-          ? await compressImageToDataUrl(firstPhoto.file, { maxDim: 320, quality: 0.54 })
-          : undefined;
+        const photoDataUrls: string[] = [];
+        for (const pid of g.photoIds.slice(0, 3)) {
+          const ph = photoById.get(pid);
+          if (!ph) continue;
+          photoDataUrls.push(
+            await compressImageToDataUrl(ph.file, { maxDim: 280, quality: 0.5 }),
+          );
+        }
+        const thumbnailDataUrl = photoDataUrls[0];
 
         items.push({
           id: g.id,
@@ -92,6 +96,7 @@ export default function MoveOutNotesPage() {
           negotiable: n.negotiable,
           usageNotes: n.usageNotes,
           thumbnailDataUrl,
+          photoDataUrls: photoDataUrls.length > 0 ? photoDataUrls : undefined,
         });
       }
 

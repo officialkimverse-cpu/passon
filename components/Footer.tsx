@@ -1,4 +1,4 @@
-import PassOnLogoMark from "@/components/PassOnLogoMark";
+import PassOnLogo from "@/components/PassOnLogo";
 
 const links = {
   Product: ["Browse items", "List your items", "Moving out", "Moving in"],
@@ -13,9 +13,8 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2.5">
-              <PassOnLogoMark className="h-9 w-9 shrink-0 text-white" />
-              <span className="font-bold text-xl tracking-tight">PassOn</span>
+            <div className="flex items-center">
+              <PassOnLogo className="h-10 w-auto max-h-10 max-w-[160px]" />
             </div>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               In-unit handoff for renters: list what you leave behind, shop what the last tenant

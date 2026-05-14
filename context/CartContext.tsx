@@ -78,7 +78,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return {
           success: false,
           conflict: true,
-          message: `Your cart has items from ${cartProperty.name}. Clear it first to browse a different property.`,
+          message: `Your cart has items from ${cartProperty.name}. Clear your cart first to use a different listing.`,
         };
       }
       // Prevent duplicates
@@ -86,12 +86,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return {
           success: false,
           conflict: false,
-          message: "Already in your request.",
+          message: "Already in your cart.",
         };
       }
       setCartItems((prev) => [...prev, { item }]);
       setCartProperty(property);
-      return { success: true, conflict: false, message: "Added to your request!" };
+      return { success: true, conflict: false, message: "Added to your cart!" };
     },
     [cartItems, cartProperty]
   );

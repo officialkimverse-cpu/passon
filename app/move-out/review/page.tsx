@@ -26,7 +26,7 @@ export default function MoveOutReviewPage() {
     for (const pid of photoIds.slice(0, 3)) {
       const p = photoById.get(pid);
       if (!p) continue;
-      const dataUrl = await compressImageToDataUrl(p.file, { maxDim: 1024, quality: 0.72 });
+      const dataUrl = await compressImageToDataUrl(p.file, { maxDim: 1152, quality: 0.68 });
       images.push({ mediaType: "image/jpeg", base64: dataUrl });
     }
 
@@ -145,6 +145,9 @@ export default function MoveOutReviewPage() {
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     Generate draft names and descriptions from your photos, then edit before publishing.
+                    For best accuracy: put only one real item per folder in Step 2, use well-lit photos,
+                    include a straight-on shot and a detail shot, and avoid mixed backgrounds that look
+                    like a second product.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3 justify-end">

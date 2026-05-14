@@ -41,7 +41,7 @@ export default function RequestPage() {
             <EmptyState
               icon="📭"
               title="Nothing to send yet"
-              description="Add items from a property before sending a request to the resident."
+              description="Add items from an invite link or the browse page, then open your cart to continue."
               action={{ label: "Browse properties", href: "/properties" }}
             />
           ) : (

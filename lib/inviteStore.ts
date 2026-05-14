@@ -13,6 +13,8 @@ export type InviteItem = {
   negotiable: boolean;
   usageNotes: string;
   thumbnailDataUrl?: string;
+  /** Extra angles for buyer detail view (compressed JPEG data URLs). */
+  photoDataUrls?: string[];
 };
 
 export type InvitePayload = {

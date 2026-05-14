@@ -7,11 +7,15 @@ import CartSummary from "@/components/flow/CartSummary";
 import EmptyState from "@/components/flow/EmptyState";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
+import { parseInviteIdFromPropertyId } from "@/lib/inviteCart";
 
 export default function CartPage() {
   const router = useRouter();
   const { cartItems, cartProperty, removeFromCart, clearCart, subtotal, estimatedSavings } =
     useCart();
+
+  const inviteId = cartProperty ? parseInviteIdFromPropertyId(cartProperty.id) : null;
+  const addMoreHref = inviteId ? `/invite/${inviteId}` : cartProperty ? `/properties/${cartProperty.id}` : "/properties";
 
   const isEmpty = cartItems.length === 0;
 
@@ -42,8 +46,8 @@ export default function CartPage() {
           {isEmpty ? (
             <EmptyState
               icon="🛒"
-              title="Your request is empty"
-              description="Browse a property and add items you're interested in. Then come back here to send your request to the resident."
+              title="Your cart is empty"
+              description="Open an invite link or browse listings, add items you want, then review everything here before sending a request."
               action={{ label: "Browse properties", href: "/properties" }}
             />
           ) : (
@@ -61,7 +65,8 @@ export default function CartPage() {
                       </p>
                     </div>
                     <button
-                      onClick={() => router.push(`/properties/${cartProperty.id}`)}
+                      type="button"
+                      onClick={() => router.push(addMoreHref)}
                       className="text-xs text-emerald-600 hover:text-emerald-700 font-medium shrink-0 transition-colors"
                     >
                       Add more →
@@ -98,7 +103,7 @@ export default function CartPage() {
                   itemCount={cartItems.length}
                   subtotal={subtotal}
                   estimatedSavings={estimatedSavings}
-                  ctaLabel="Send Request to Resident →"
+                  ctaLabel="Continue to checkout →"
                   onCta={() => router.push("/request")}
                 />
               </div>

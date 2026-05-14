@@ -11,14 +11,23 @@ const conditionColor = {
   Fair: "text-orange-600",
 };
 
+function isImageSrc(s: string) {
+  return s.startsWith("data:") || s.startsWith("http://") || s.startsWith("https://");
+}
+
 export default function CartItem({ entry, onRemove }: CartItemProps) {
   const { item } = entry;
+  const imgIsUrl = isImageSrc(item.image);
 
   return (
     <div className="flex items-center gap-4 py-4 border-b border-gray-100 last:border-0">
       {/* Image */}
-      <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-2xl shrink-0">
-        {item.image}
+      <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center text-2xl shrink-0">
+        {imgIsUrl ? (
+          <img src={item.image} alt="" className="w-full h-full object-cover" />
+        ) : (
+          item.image
+        )}
       </div>
 
       {/* Info */}
@@ -40,7 +49,9 @@ export default function CartItem({ entry, onRemove }: CartItemProps) {
 
       {/* Price + Remove */}
       <div className="flex flex-col items-end gap-1.5 shrink-0">
-        <span className="font-bold text-gray-900">${item.price}</span>
+        <span className="font-bold text-gray-900">
+          {item.price === 0 ? "FREE" : `$${item.price}`}
+        </span>
         <button
           onClick={() => onRemove(item.id)}
           className="text-xs text-gray-400 hover:text-rose-500 transition-colors"

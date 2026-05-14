@@ -33,7 +33,9 @@ export default function CartSummary({
         </div>
         <div className="flex justify-between text-gray-600">
           <span>Subtotal</span>
-          <span className="font-bold text-gray-900">${subtotal}</span>
+          <span className="font-bold text-gray-900">
+            {subtotal === 0 && itemCount > 0 ? "FREE" : `$${subtotal}`}
+          </span>
         </div>
         {estimatedSavings > 0 && (
           <div className="flex justify-between text-emerald-600">

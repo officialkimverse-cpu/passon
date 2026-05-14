@@ -8,8 +8,20 @@ type PublishRequest = {
 /** Vercel serverless request bodies are capped (~4.5MB). Thumbnails are the usual overflow. */
 const MAX_JSON_BYTES = 4_000_000;
 const MAX_THUMB_CHARS = 100_000;
+const MAX_GALLERY_URL_CHARS = 85_000;
+const MAX_GALLERY_PER_ITEM = 3;
 const MAX_DESCRIPTION = 12_000;
 const MAX_USAGE_NOTES = 8_000;
+
+function slimGallery(urls: unknown): string[] | undefined {
+  if (!Array.isArray(urls)) return undefined;
+  const out = urls
+    .filter((u): u is string => typeof u === "string")
+    .slice(0, MAX_GALLERY_PER_ITEM)
+    .map((u) => u.slice(0, MAX_GALLERY_URL_CHARS))
+    .filter((u) => u.length > 0);
+  return out.length ? out : undefined;
+}
 
 function slimInviteItems(items: InviteItem[]): InviteItem[] {
   return items.map((it) => ({
@@ -18,6 +30,7 @@ function slimInviteItems(items: InviteItem[]): InviteItem[] {
       typeof it.thumbnailDataUrl === "string" && it.thumbnailDataUrl.length <= MAX_THUMB_CHARS
         ? it.thumbnailDataUrl
         : undefined,
+    photoDataUrls: slimGallery(it.photoDataUrls),
     description:
       typeof it.description === "string" && it.description.length > MAX_DESCRIPTION
         ? it.description.slice(0, MAX_DESCRIPTION)
@@ -47,6 +60,10 @@ export async function POST(req: Request) {
 
   let items = slimInviteItems(body.items);
   let serialized = JSON.stringify({ items });
+  if (serialized.length > MAX_JSON_BYTES) {
+    items = items.map((it) => ({ ...it, photoDataUrls: undefined }));
+    serialized = JSON.stringify({ items });
+  }
   if (serialized.length > MAX_JSON_BYTES) {
     items = items.map((it) => ({ ...it, thumbnailDataUrl: undefined }));
     serialized = JSON.stringify({ items });

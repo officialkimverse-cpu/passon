@@ -62,25 +62,43 @@ export async function POST(req: Request) {
     });
   }
 
-  const contentBlocks = [
-    ...body.images.slice(0, 6).map((img) => ({
+  const images = body.images.slice(0, 6);
+  const contentBlocks: Array<Record<string, unknown>> = [
+    {
+      type: "text",
+      text:
+        "You are drafting a resale listing for ONE item (or one matched set) a renter is leaving in their apartment. " +
+        "You will receive several photos in order — they are different angles of the SAME listing group.\n\n" +
+        "GROUNDING RULES (critical):\n" +
+        "- Describe ONLY what is clearly visible in the photos. Do not invent brand names, model numbers, exact dimensions, materials, or features you cannot see.\n" +
+        "- If the object type is ambiguous, name it generically (e.g. \"wood dining table\" not a specific collection name).\n" +
+        "- If lighting, blur, or crop hides detail, say so briefly in the description (e.g. \"finish not fully visible\") instead of guessing.\n" +
+        "- Do not copy marketing-style superlatives or catalog language unless it matches obvious visual cues.\n" +
+        "- For condition, base it on visible wear, stains, scratches, or upholstery state only.\n\n" +
+        "OUTPUT: Return a single JSON object with exactly these keys: " +
+        "name (short, plain language), " +
+        "description (2 sentences max: what it is + visible condition/color/shape; no unverified claims), " +
+        "category (one word: Furniture, Kitchen, Decor, Electronics, Storage, Bedding, Lighting, Appliance, or Other), " +
+        "condition (exactly one of: Like New, Good, Fair), " +
+        "marketPrice (number, USD — conservative used resale estimate for a similar generic item if brand unknown).\n" +
+        "Output ONLY valid JSON with no markdown and no code fences.",
+    },
+  ];
+
+  images.forEach((img, i) => {
+    contentBlocks.push({
       type: "image",
       source: {
         type: "base64",
         media_type: img.mediaType as "image/jpeg" | "image/png" | "image/gif" | "image/webp",
         data: stripDataUrl(img.base64),
       },
-    })),
-    {
+    });
+    contentBlocks.push({
       type: "text",
-      text:
-        "You are helping an outgoing renter create a listing for items they are leaving behind in a rental. " +
-        "Look at the photos (multiple angles of the SAME item group). " +
-        "Return a JSON object with keys: name (short), description (1-2 sentences), category (one word), condition (one of: Like New, Good, Fair), marketPrice (number, USD). " +
-        "marketPrice should be a realistic low online price for a similar used item (if uncertain, estimate conservatively). " +
-        "Do not include any extra keys. Output ONLY valid JSON (no markdown, no code fences).",
-    },
-  ];
+      text: `Photo ${i + 1} of ${images.length} for this item group.`,
+    });
+  });
 
   const resp = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -91,8 +109,8 @@ export async function POST(req: Request) {
     },
     body: JSON.stringify({
       model,
-      max_tokens: 300,
-      temperature: 0.2,
+      max_tokens: 400,
+      temperature: 0.1,
       messages: [{ role: "user", content: contentBlocks }],
     }),
   });

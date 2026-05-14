@@ -1,23 +1,22 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import type { InviteItem } from "@/lib/inviteStore";
 
 type InvitePayload = {
   id: string;
   createdAt: string;
-  items: Array<{
-    id: string;
-    title: string;
-    description: string;
-    finalPrice?: number;
-    negotiable: boolean;
-    condition?: string;
-    yearsOfUse?: number;
-    thumbnailDataUrl?: string;
-  }>;
+  items: InviteItem[];
 };
+
+function formatPrice(p?: number) {
+  if (p === 0) return "FREE";
+  if (p === undefined || Number.isNaN(p)) return "—";
+  return `$${p}`;
+}
 
 export default function InvitePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -53,7 +52,16 @@ export default function InvitePage({ params }: { params: Promise<{ id: string }>
               Browse what’s being left behind
             </h1>
             <p className="mt-2 text-gray-500 max-w-2xl">
-              Choose what you want from this unit. This is a prototype buyer view.
+              Tap an item for photos and full details, then add what you want to your cart. Continue
+              to checkout to send a request to the seller.
+            </p>
+            <p className="mt-3">
+              <Link
+                href="/cart"
+                className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+              >
+                View cart →
+              </Link>
             </p>
           </div>
 
@@ -68,50 +76,44 @@ export default function InvitePage({ params }: { params: Promise<{ id: string }>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {data.items.map((it) => (
-                <div
+                <Link
                   key={it.id}
-                  className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden"
+                  href={`/invite/${id}/item/${encodeURIComponent(it.id)}`}
+                  className="group bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden hover:border-emerald-200 hover:shadow-md transition-all flex flex-col"
                 >
-                  <div className="h-40 bg-gray-50 flex items-center justify-center">
+                  <div className="h-40 bg-gray-50 flex items-center justify-center relative">
                     {it.thumbnailDataUrl ? (
                       <img
                         src={it.thumbnailDataUrl}
-                        alt={it.title}
-                        className="h-full w-full object-cover"
+                        alt=""
+                        className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
                       />
                     ) : (
                       <span className="text-gray-400 text-sm">No image</span>
                     )}
+                    <span className="absolute bottom-2 right-2 text-[10px] font-bold uppercase tracking-wider bg-white/90 text-emerald-700 px-2 py-1 rounded-md border border-emerald-100">
+                      View details
+                    </span>
                   </div>
-                  <div className="p-5 flex flex-col gap-3">
+                  <div className="p-5 flex flex-col gap-2 flex-1">
                     <div className="flex items-start justify-between gap-3">
-                      <p className="font-semibold text-gray-900">{it.title || "Untitled item"}</p>
-                      <p className="font-bold text-emerald-600 shrink-0">
-                        {it.finalPrice === 0 ? "FREE" : it.finalPrice ? `$${it.finalPrice}` : "—"}
+                      <p className="font-semibold text-gray-900 group-hover:text-emerald-800 transition-colors">
+                        {it.title || "Untitled item"}
                       </p>
+                      <p className="font-bold text-emerald-600 shrink-0">{formatPrice(it.finalPrice)}</p>
                     </div>
-                    {it.description && (
-                      <p className="text-sm text-gray-500 leading-relaxed">{it.description}</p>
-                    )}
-                    <div className="text-xs text-gray-400 flex flex-wrap gap-x-3 gap-y-1">
-                      {it.condition && <span>Condition: {it.condition}</span>}
-                      {it.yearsOfUse !== undefined && <span>Used: {it.yearsOfUse}y</span>}
-                      <span>{it.negotiable ? "Negotiable" : "Not negotiable"}</span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 pt-2">
-                      <button className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-2.5 transition-colors">
-                        Buy now
-                      </button>
-                      <button className="rounded-xl border border-gray-200 hover:border-gray-300 text-gray-800 text-sm font-semibold py-2.5 transition-colors">
-                        Offer / Negotiate
-                      </button>
-                      <button className="col-span-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-800 text-sm font-semibold py-2.5 border border-gray-100 transition-colors">
-                        Not interested
-                      </button>
+                    {it.description ? (
+                      <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
+                        {it.description}
+                      </p>
+                    ) : null}
+                    <div className="text-xs text-gray-400 flex flex-wrap gap-x-3 gap-y-1 mt-auto pt-2">
+                      {it.condition ? <span>{it.condition}</span> : null}
+                      {it.yearsOfUse !== undefined ? <span>{it.yearsOfUse}y use</span> : null}
+                      <span>{it.negotiable ? "Negotiable" : "Firm price"}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
@@ -121,4 +123,3 @@ export default function InvitePage({ params }: { params: Promise<{ id: string }>
     </>
   );
 }
-
