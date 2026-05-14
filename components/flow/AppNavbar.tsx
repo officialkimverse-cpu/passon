@@ -3,28 +3,23 @@
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import PassOnBrand from "@/components/PassOnBrand";
-import PassOnLogoMark from "@/components/PassOnLogoMark";
 
 export default function AppNavbar() {
   const { cartCount } = useCart();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center gap-2 sm:gap-3">
-        <div className="flex-1 flex items-center justify-start min-w-0">
-          <Link href="/" className="shrink-0 flex items-center" aria-label="PassOn home">
-            <PassOnLogoMark className="h-8 w-auto max-h-8 max-w-[72px] sm:max-w-[88px] object-left" />
-          </Link>
-        </div>
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center px-4 sm:px-6">
+        <Link
+          href="/"
+          className="mr-auto flex shrink-0 items-center justify-start min-w-0 max-w-[min(280px,58vw)] self-center"
+          aria-label="PassOn home"
+        >
+          <PassOnBrand className="h-9 sm:h-10 w-auto max-h-10" />
+        </Link>
 
-        <div className="shrink-0 flex justify-center px-1 sm:px-2">
-          <Link href="/" className="inline-flex items-center" aria-label="PassOn home">
-            <PassOnBrand className="h-9 sm:h-10 w-auto max-h-10 max-w-[min(220px,48vw)] object-center" />
-          </Link>
-        </div>
-
-        <div className="flex-1 flex items-center justify-end gap-2 min-w-0">
-          <div className="hidden md:flex items-center gap-6 text-sm text-gray-500 mr-2">
+        <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
+          <div className="hidden md:flex items-center gap-6 text-sm text-gray-500">
             <Link href="/properties" className="hover:text-gray-900 transition-colors whitespace-nowrap">
               Browse Properties
             </Link>

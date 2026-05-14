@@ -1,30 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PassOnLogoIconSvg from "@/components/PassOnLogoIconSvg";
 
 const MARK_SRC = "/passon-logo-mark.png";
 
 /**
- * Smaller mark for footer, emails, etc. (`public/passon-logo-mark.png`).
- * If missing, falls back to the compact vector icon (no wordmark).
+ * Smaller mark (`public/passon-logo-mark.png`). Preloads to avoid a broken `<img>` flash.
  */
 export default function PassOnLogoMark({ className }: { className?: string }) {
-  const [useRaster, setUseRaster] = useState(true);
+  const [pngOk, setPngOk] = useState(false);
 
-  if (!useRaster) {
-    return <PassOnLogoIconSvg className={className} />;
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setPngOk(true);
+    img.onerror = () => setPngOk(false);
+    img.src = MARK_SRC;
+  }, []);
+
+  const merged = [
+    "block object-contain",
+    className ?? "h-8 w-auto max-h-8 sm:h-9 sm:max-h-9 object-left",
+  ].join(" ");
+
+  if (!pngOk) {
+    return <PassOnLogoIconSvg className={merged} />;
   }
 
   return (
     <img
       src={MARK_SRC}
       alt=""
-      className={["block object-contain", className ?? "h-8 w-auto max-h-8 sm:h-9 sm:max-h-9 object-left"].join(
-        " ",
-      )}
+      className={merged}
       decoding="async"
-      onError={() => setUseRaster(false)}
+      onError={() => setPngOk(false)}
     />
   );
 }

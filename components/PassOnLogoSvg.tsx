@@ -9,7 +9,7 @@ export default function PassOnLogoSvg({ className }: { className?: string }) {
       viewBox="0 0 100 118"
       fill="none"
       className={className}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="xMinYMid meet"
       aria-hidden
     >
       <path
