@@ -154,7 +154,7 @@ export default function HeroSection() {
         </div>
 
         <div className="relative hidden lg:block">
-          <div className="grid grid-cols-2 gap-3 rotate-1">
+          <div className="grid grid-cols-2 gap-3">
             {previewItems.map((item, i) => (
               <div key={item.id} className={i === 0 ? "col-span-2" : ""}>
                 <ItemCard item={item} />

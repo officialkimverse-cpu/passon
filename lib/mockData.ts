@@ -13,6 +13,8 @@ export interface Listing {
   location: string;
   badge?: Badge;
   emoji: string;
+  /** Hero / cards — real photo preview */
+  imageSrc?: string;
   daysAgo: number;
 }
 
@@ -25,6 +27,8 @@ export const listings: Listing[] = [
     location: "Morningside Heights",
     badge: "Next resident priority",
     emoji: "🖥️",
+    imageSrc:
+      "https://images.unsplash.com/photo-1592078615290-03300735428e?auto=format&fit=crop&w=800&q=80",
     daysAgo: 2,
   },
   {
@@ -35,6 +39,8 @@ export const listings: Listing[] = [
     location: "Williamsburg",
     badge: "At turnover",
     emoji: "🪑",
+    imageSrc:
+      "https://images.unsplash.com/photo-1580480055273-a1033438c0cc?auto=format&fit=crop&w=800&q=80",
     daysAgo: 1,
   },
   {
@@ -45,6 +51,8 @@ export const listings: Listing[] = [
     location: "Astoria",
     badge: "Price drop",
     emoji: "🛏️",
+    imageSrc:
+      "https://images.unsplash.com/photo-1505693416388-eac992166147?auto=format&fit=crop&w=800&q=80",
     daysAgo: 3,
   },
   {
@@ -55,6 +63,8 @@ export const listings: Listing[] = [
     location: "Crown Heights",
     badge: "At turnover",
     emoji: "💡",
+    imageSrc:
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
     daysAgo: 1,
   },
   {
@@ -65,6 +75,8 @@ export const listings: Listing[] = [
     location: "Inwood",
     badge: "Popular",
     emoji: "📦",
+    imageSrc:
+      "https://images.unsplash.com/photo-1574269905072-6e3d4d231ecc?auto=format&fit=crop&w=800&q=80",
     daysAgo: 4,
   },
   {
@@ -75,6 +87,8 @@ export const listings: Listing[] = [
     location: "Bushwick",
     badge: "Next resident priority",
     emoji: "🗄️",
+    imageSrc:
+      "https://images.unsplash.com/photo-1594620302202-9c7986a4d1c6?auto=format&fit=crop&w=800&q=80",
     daysAgo: 2,
   },
 ];
