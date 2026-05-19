@@ -4,9 +4,9 @@ Put your own furniture photos here to replace the default Unsplash images on the
 
 | File name | Shown as |
 |-----------|----------|
-| `standing-desk.jpg` | Standing Desk (hero) |
-| `office-chair.jpg` | Office Chair |
-| `bed-frame.jpg` | Bed Frame (Queen) |
+| `standing-desk.jpg` | Standing Desk (hero) — use a photo of a desk |
+| `office-chair.jpg` | Office Chair — use a photo of a chair, not a sofa |
+| `bed-frame.jpg` | Bed Frame (Queen) — use a bed / bedroom photo |
 | `floor-lamp.jpg` | Floor Lamp |
 | `microwave.jpg` | Microwave |
 | `storage-shelf.jpg` | Storage Shelf |

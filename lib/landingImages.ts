@@ -1,28 +1,24 @@
 /**
- * Landing listing photos — Unsplash IDs aligned with “What is PassOn” (reliable on the site).
- * Optional: add your own JPGs under public/images/listings/ (see README there).
+ * Landing listing photos — each URL matches the item title (furniture / appliance).
+ * Optional override: add JPGs in `public/images/listings/` (see README there).
  */
 
 const u = (id: string) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=80`;
 
-/** Proven on this project */
-const PROVEN = {
-  moving: u("photo-1714647211902-bb711d643a17"),
-  livingRoom: u("photo-1555041469-a586c61ea9bc"),
-  keys: u("photo-1741156386380-0236c72eb6f9"),
-  plant: u("photo-1525695230005-efd074980869"),
-  turnover: u("photo-1600585154340-be6161a56a0c"),
-  planning: u("photo-1454165804606-c3d57bc86b40"),
-} as const;
-
 export const listingPhotoUrls = {
-  standingDesk: PROVEN.planning,
-  officeChair: PROVEN.livingRoom,
-  bedFrame: PROVEN.moving,
-  floorLamp: PROVEN.plant,
-  microwave: PROVEN.turnover,
-  storageShelf: PROVEN.keys,
+  /** Adjustable standing desk with monitor */
+  standingDesk: u("photo-1592078615290-03300735428e"),
+  /** Ergonomic rolling office chair */
+  officeChair: u("photo-1580480055273-a1033438c0cc"),
+  /** Queen / double bed in a bedroom */
+  bedFrame: u("photo-1522771739844-6a9f81d6303f"),
+  /** Floor lamp in a living space */
+  floorLamp: u("photo-1513506003901-1e6a229e2d15"),
+  /** Microwave on kitchen counter */
+  microwave: u("photo-1574269905072-6e3d4d231ecc"),
+  /** Wooden shelving / storage unit */
+  storageShelf: u("photo-1595428774221-9ecd5c47d0d1"),
 } as const;
 
 export const listingLocalPaths = {
