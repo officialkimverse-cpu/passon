@@ -1,15 +1,26 @@
 import { Listing } from "@/lib/mockData";
 import Badge from "./Badge";
+import ListingPhoto from "./ListingPhoto";
 
 export default function ItemCard({ item }: { item: Listing }) {
+  const hasImages = item.imageLocal && item.imageFallback;
+
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="relative h-32 sm:h-36 bg-gray-100">
-        {item.imageSrc ? (
+        {hasImages ? (
+          <ListingPhoto
+            localSrc={item.imageLocal!}
+            fallbackSrc={item.imageFallback!}
+            alt={item.title}
+            emoji={item.emoji}
+          />
+        ) : item.imageSrc ? (
           <img
             src={item.imageSrc}
             alt={item.title}
             loading="lazy"
+            referrerPolicy="no-referrer"
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (

@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { listings } from "@/lib/mockData";
+import { simulationPhotos } from "@/lib/landingImages";
 
-const IMG = "https://images.unsplash.com/photo-1592078615290-03300735428e?auto=format&fit=crop&w=600&q=80";
-const IMG2 = "https://images.unsplash.com/photo-1580480055273-a1033438c0cc?auto=format&fit=crop&w=600&q=80";
-const IMG3 = "https://images.unsplash.com/photo-1505693416388-eac992166147?auto=format&fit=crop&w=600&q=80";
+const [IMG, IMG2, IMG3] = simulationPhotos;
 
 type Mode = "looks" | "works";
 
@@ -140,10 +139,12 @@ export default function ProductSimulationSection() {
                         className="rounded-xl border border-gray-100 overflow-hidden bg-white shadow-sm"
                       >
                         <div className="h-24 bg-gray-100 relative">
-                          {it.imageSrc ? (
+                          {it.imageFallback ? (
                             <img
-                              src={it.imageSrc}
+                              src={it.imageFallback}
                               alt=""
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
                               className="absolute inset-0 w-full h-full object-cover"
                             />
                           ) : (
